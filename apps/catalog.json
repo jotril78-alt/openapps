@@ -1,11 +1,14 @@
 [
   {
-    "id": "jarvis-preview",
-    "name": "Jarvis",
-    "description": "Asistente personal Android en desarrollo. Vista previa de su futura ficha en OpenApps.",
+    "id": "navaliche-test",
+    "name": "Navaliche",
+    "description": "Asistente local para Meta Quest 3 y 3S. Zoom, escáner de habitación y órdenes de voz sin conexión. Versión de pruebas: requiere validación en las gafas.",
     "status": "test",
-    "icon": "J",
-    "version": "Prototipo",
-    "note": "Demostración visual. APK todavía no publicada."
+    "icon": "N",
+    "version": "0.4.1 · Meta Quest 3/3S",
+    "note": "TEST · APK real (103,9 MB). Enlace alojado en Google Drive; su acceso público no está verificado. El código fuente y las condiciones de distribución deben revisarse antes del lanzamiento general.",
+    "apk": "https://drive.google.com/file/d/116nRH1UE6wOCMgkyLY-QLunjsQkwu0wK/view?usp=drive_web",
+    "downloadLabel": "Ver APK en Google Drive ↗",
+    "sha256": "d2473c6eb5bb9606ce06ce7b72ed066ee168202fdb3859cd361b5c850630c287"
   }
 ]
