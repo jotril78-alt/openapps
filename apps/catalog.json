@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "id": "jarvis-preview",
+    "name": "Jarvis",
+    "description": "Asistente personal Android en desarrollo. Vista previa de su futura ficha en OpenApps.",
+    "status": "test",
+    "icon": "J",
+    "version": "Prototipo",
+    "note": "Demostración visual. APK todavía no publicada."
+  }
+]
