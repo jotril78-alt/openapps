@@ -18,25 +18,20 @@ let activeContents=null,reading=false,paused=false,queue=[],chunkIndex=0,utteran
 function voiceScore(v){const n=v.name.toLowerCase();return (v.lang.toLowerCase()==='es-es'?30:0)+(v.localService?5:0)+(/male|masculin|hombre|jorge|diego|pablo|enrique|antonio|carlos|alvaro|álvaro/.test(n)?20:0)+(/natural|neural|premium|enhanced/.test(n)?10:0)}
 function voicesLoad(){if(!synth)return;const list=synth.getVoices().filter(v=>v.lang.toLowerCase().startsWith('es'));const chosen=localStorage.getItem('lorca-voice')||'';voiceSelect.replaceChildren();for(const v of list){const o=document.createElement('option');o.value=v.voiceURI;o.textContent=v.name+' ('+v.lang+')';voiceSelect.appendChild(o)}if(chosen&&list.some(v=>v.voiceURI===chosen))voiceSelect.value=chosen;else{const male=list.filter(v=>/male|masculin|hombre|jorge|diego|pablo|enrique|antonio|carlos|alvaro|álvaro|español.*hombre/i.test(v.name));const ranked=[...(male.length?male:list)].sort((a,b)=>voiceScore(b)-voiceScore(a));if(ranked.length)voiceSelect.value=ranked[0].voiceURI}voiceSelect.title='Voces españolas disponibles en este dispositivo; la voz seleccionada se conserva'}
 if(synth){voicesLoad();synth.addEventListener?.('voiceschanged',voicesLoad)}
-document.getElementById('tryVoice').onclick=()=>{const list=[...voiceSelect.options];if(!list.length){alert('Android no ha proporcionado voces españolas alternativas.');return}voiceSelect.selectedIndex=(voiceSelect.selectedIndex+1)%list.length;voiceSelect.onchange();const selected=voiceSelect.options[voiceSelect.selectedIndex];alert('Voz seleccionada: '+selected.textContent+'. Pulsa Leer para escucharla.')};
+document.getElementById('tryVoice').onclick=()=>{
+ const list=[...voiceSelect.options];if(!list.length){alert('Android no ha proporcionado voces españolas alternativas.');return}
+ stopReading();voiceSelect.selectedIndex=(voiceSelect.selectedIndex+1)%list.length;
+ localStorage.setItem('lorca-voice',voiceSelect.value);
+ const v=synth.getVoices().find(x=>x.voiceURI===voiceSelect.value);
+ const sample=new SpeechSynthesisUtterance('Verde que te quiero verde. Verde viento. Verdes ramas.');
+ sample.lang='es-ES';sample.rate=.8;sample.pitch=.9;if(v)sample.voice=v;
+ synth.cancel();synth.speak(sample);
+ progress.textContent='Probando voz: '+(v?.name||'predeterminada');
+};
 voiceSelect.onchange=()=>{localStorage.setItem('lorca-voice',voiceSelect.value);if(reading)stopReading()};
 speedSelect.value=localStorage.getItem('lorca-speed')||'0.8';speedSelect.onchange=()=>{localStorage.setItem('lorca-speed',speedSelect.value);if(reading)stopReading()};
 function stopReading(){lastAudioSectionText='';audioToken++;clearTimeout(pauseTimer);voiceBusy=false;reading=false;paused=false;queue=[];chunkIndex=0;if(synth)synth.cancel();listen.textContent='🔊 Leer';stopBtn.hidden=true}
-function makeChunks(text){
- const lines=text.split(/\n+/).map(x=>x.trim()).filter(Boolean),out=[];
- for(let i=0;i<lines.length;i++){
-  const line=lines[i];
-  const heading=i<5&&(/^([IVXLCDM]+|\d+)[.\s]*$/i.test(line)||line.length<75);
-  const sentences=line.match(/[^.!?;:]+[.!?;:]?/g)||[line];
-  for(const sentence of sentences){
-   let rest=sentence.trim();
-   while(rest.length>130){let cut=rest.lastIndexOf(' ',130);if(cut<45)cut=130;out.push({text:rest.slice(0,cut),pause:120});rest=rest.slice(cut).trim()}
-   if(rest)out.push({text:rest,pause:/[.!?]$/.test(rest)?560:/[,;:]$/.test(rest)?340:230});
-  }
-  if(heading&&out.length)out[out.length-1].pause=Math.max(out[out.length-1].pause,1250);
- }
- return out;
-}
+function makeChunks(text){return (text.replace(/\s+/g,' ').trim().match(/[^.!?;:]+[.!?;:]?/g)||[]).flatMap(sentence=>{const out=[];let rest=sentence.trim();while(rest.length>130){let cut=rest.lastIndexOf(' ',130);if(cut<45)cut=130;out.push({text:rest.slice(0,cut),pause:120});rest=rest.slice(cut).trim()}if(rest)out.push({text:rest,pause:/[.!?]$/.test(rest)?560:/[,;:]$/.test(rest)?340:230});return out})}
 function poetryLayout(contents){try{const style=contents.document.createElement('style');style.textContent='p,blockquote,div.stanza,div.estrofa,.poem,.poetry,.verse,section.poem{break-inside:avoid!important;page-break-inside:avoid!important;orphans:3;widows:3}h1,h2,h3{break-after:avoid!important;page-break-after:avoid!important}';contents.document.head.appendChild(style)}catch(e){console.warn('Diseño poético',e)}}
 function extractText(doc){if(!doc?.body)return '';const clone=doc.body.cloneNode(true);clone.querySelectorAll('nav,script,style,svg,aside,footer,header').forEach(e=>e.remove());clone.querySelectorAll('p,li,h1,h2,h3,blockquote').forEach(e=>e.appendChild(doc.createTextNode('\n')));return clone.innerText||clone.textContent||''}
 function extractFromCurrentPosition(doc){
