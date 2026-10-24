@@ -28,7 +28,7 @@ function extractFromCurrentPosition(doc){
  const full=extractText(doc),cfi=rendition?.currentLocation()?.start?.cfi;
  if(!cfi)return full;
  try{
-  const epubCfi=new book.epubcfi.constructor(cfi);
+  const epubCfi=new ePub.CFI(cfi);
   const range=epubCfi.toRange(doc);
   if(!range)return full;
   const before=doc.createRange();before.selectNodeContents(doc.body);before.setEnd(range.startContainer,range.startOffset);
