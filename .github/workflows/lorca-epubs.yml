@@ -1,0 +1,30 @@
+name: Prepare Lorca EPUB files
+on:
+  push:
+    paths:
+      - '.github/workflows/lorca-epubs.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fetch-epubs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download verified EPUB files
+        run: |
+          mkdir -p lorca/epubs
+          curl -fL --retry 3 --connect-timeout 20 --max-time 180 -A 'Mozilla/5.0' 'https://www.gutenberg.org/ebooks/72665.epub3.images' -o lorca/epubs/romancero-gitano.epub
+          curl -fL --retry 3 --connect-timeout 20 --max-time 180 -A 'Mozilla/5.0' 'https://www.gutenberg.org/ebooks/75703.epub3.images' -o lorca/epubs/libro-de-poemas.epub
+          python3 - <<'PY'
+          import zipfile
+          for path in ['lorca/epubs/romancero-gitano.epub','lorca/epubs/libro-de-poemas.epub']:
+              with zipfile.ZipFile(path) as z:
+                  assert z.read('mimetype') == b'application/epub+zip', path
+          PY
+      - name: Commit EPUBs to GitHub Pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add lorca/epubs/
+          git diff --cached --quiet || (git commit -m 'Add locally hosted Lorca EPUB editions' && git push)
