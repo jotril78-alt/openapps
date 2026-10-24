@@ -50,33 +50,44 @@ function extractFromCurrentPosition(doc){
 function currentSpineIndex(){const href=activeContents?.section?.href;const items=book?.spine?.spineItems||[];let idx=items.findIndex(x=>x.href===href);if(idx<0){const current=rendition?.currentLocation()?.start?.index;idx=Number.isInteger(current)?current:0}return idx}
 async function nextAudioSection(token){if(!reading||token!==audioToken)return;const items=book?.spine?.spineItems||[];for(let i=spineIndex+1;i<items.length;i++){if(!reading||token!==audioToken)return;spineIndex=i;try{await rendition.display(items[i].href);if(!reading||token!==audioToken)return;const text=extractText(activeContents?.document);if(lastAudioSectionText&&text.replace(/\s+/g,' ').trim()===lastAudioSectionText){continue}lastAudioSectionText=text.replace(/\s+/g,' ').trim();queue=makeChunks(text);chunkIndex=0;if(queue.some(x=>x.text.trim())){speakNext(token);return}}catch(e){console.warn('Sección no legible',e)}}stopReading();progress.textContent='Lectura en voz alta terminada'}
 function syncSpokenPhrase(phrase,token){
- if(!reading||paused||token!==audioToken||!activeContents?.document)return;
- const doc=activeContents.document;
+ if(!reading||paused||token!==audioToken||!activeContents?.document||syncBusy)return;
+ const contents=activeContents,doc=contents.document;
  if(syncDoc!==doc){syncDoc=doc;syncCursor=0}
- const nodes=[],walker=doc.createTreeWalker(doc.body,NodeFilter.SHOW_TEXT);
- let node,all='',starts=[];
- while((node=walker.nextNode())){if(!node.nodeValue.trim())continue;starts.push(all.length);nodes.push(node);all+=node.nodeValue}
- const normalized=t=>t.toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim();
- const needle=normalized(phrase).slice(0,Math.min(45,phrase.length));
+ const normalize=t=>t.toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim();
+ const needle=normalize(phrase).slice(0,50);
  if(!needle)return;
- // Find matching words even when the EPUB splits the phrase across inline tags.
- const flat=all.toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
- const clean=flat.replace(/\s+/g,' ');
- let pos=clean.indexOf(needle,syncCursor);
- if(pos<0)pos=clean.indexOf(needle);
+ // Map normalized characters to their original text nodes, including inline markup.
+ const walker=doc.createTreeWalker(doc.body,NodeFilter.SHOW_TEXT),chars=[],positions=[];
+ let node,lastSpace=false;
+ while((node=walker.nextNode())){
+  if(node.parentElement?.closest('script,style,nav,aside,footer,header'))continue;
+  const raw=node.nodeValue;
+  for(let i=0;i<raw.length;i++){
+   const folded=raw[i].toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+   for(const c of folded){
+    if(/\s/.test(c)){if(lastSpace)continue;chars.push(' ');positions.push({node,offset:i});lastSpace=true}
+    else{chars.push(c);positions.push({node,offset:i});lastSpace=false}
+   }
+  }
+ }
+ const haystack=chars.join('');
+ let pos=haystack.indexOf(needle,syncCursor);
+ if(pos<0&&syncCursor===0)pos=haystack.indexOf(needle);
  if(pos<0)return;
  syncCursor=pos+needle.length;
- let idx=starts.length-1;
- for(let i=0;i<starts.length;i++){if(starts[i]<=pos)idx=i;else break}
- const offset=Math.min(nodes[idx].length,Math.max(0,pos-starts[idx]));
- const range=doc.createRange();range.setStart(nodes[idx],offset);range.setEnd(nodes[idx],Math.min(nodes[idx].length,offset+1));
- const rect=range.getBoundingClientRect(),w=doc.documentElement.clientWidth;
- if(rect.width===0&&rect.height===0)return;
- if(rect.left>=0&&rect.left<w-10)return;
- if(syncBusy)return;
- try{const cfi=activeContents.cfiFromRange(range);if(!cfi)return;syncBusy=true;
-  rendition.display(cfi).catch(e=>console.warn('Sincronización visual',e)).finally(()=>{syncBusy=false});
- }catch(e){syncBusy=false;console.warn('Sincronización visual',e)}
+ const start=positions[pos],end=positions[Math.min(positions.length-1,pos+needle.length-1)];
+ if(!start||!end)return;
+ const range=doc.createRange();
+ try{range.setStart(start.node,start.offset);range.setEnd(end.node,Math.min(end.node.length,end.offset+1))}catch(e){return}
+ const rect=range.getBoundingClientRect(),frame=doc.defaultView?.frameElement;
+ const width=frame?.clientWidth||doc.documentElement.clientWidth;
+ // Only turn the page if the spoken text has left the visible column.
+ if(rect.width&&rect.left>=-8&&rect.left<width-12&&rect.right>0)return;
+ try{
+  const cfi=contents.cfiFromRange(range);if(!cfi)return;
+  syncBusy=true;
+  rendition.display(cfi).catch(e=>console.warn('Avance automático',e)).finally(()=>{syncBusy=false});
+ }catch(e){syncBusy=false;console.warn('Sincronización de lectura',e)}
 }
 function speakNext(token){if(!reading||paused||token!==audioToken)return;if(chunkIndex>=queue.length){nextAudioSection(token);return}const phrase=queue[chunkIndex++];if(!phrase.text){speakNext(token);return}utterance=new SpeechSynthesisUtterance(phrase.text);utterance.lang='es-ES';utterance.rate=Math.max(0.65,Number(speedSelect.value));utterance.pitch=0.82;
 const selected=synth.getVoices().find(v=>v.voiceURI===voiceSelect.value&&v.lang.toLowerCase().startsWith('es'));if(selected)utterance.voice=selected;utterance.onstart=()=>{voiceBusy=true;syncSpokenPhrase(phrase.text,token)};utterance.onend=()=>{voiceBusy=false;if(reading&&token===audioToken&&!paused)pauseTimer=setTimeout(()=>{if(reading&&token===audioToken&&!paused)speakNext(token)},phrase.pause)};utterance.onerror=e=>{voiceBusy=false;if(token!==audioToken)return;console.error('Error de síntesis',e.error);if(e.error==='interrupted'||e.error==='canceled')return;stopReading();listen.textContent='Error de voz: '+e.error};try{synth.speak(utterance)}catch(e){stopReading();alert('No se pudo iniciar la voz: '+e.message)}}
