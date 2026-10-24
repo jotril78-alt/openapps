@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - '.github/workflows/lorca-epubs.yml'
+      - 'lorca/lector-epub.html'
   workflow_dispatch:
 permissions:
   contents: write
