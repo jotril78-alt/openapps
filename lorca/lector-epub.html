@@ -25,12 +25,17 @@ function stopReading(){lastAudioSectionText='';audioToken++;clearTimeout(pauseTi
 function makeChunks(text){
  const lines=text.split(/\n+/).map(x=>x.trim()).filter(Boolean),out=[];
  for(let i=0;i<lines.length;i++){
-  const line=lines[i],isHeading=/^([IVXLCDM]+|[0-9]+)[.\s]*$/i.test(line)||line.length<48&&i<4;
+  const line=lines[i];
+  const heading=i<5&&(/^([IVXLCDM]+|\d+)[.\s]*$/i.test(line)||line.length<75);
   const sentences=line.match(/[^.!?;:]+[.!?;:]?/g)||[line];
-  for(const sentence of sentences){let rest=sentence.trim();while(rest.length>125){let cut=rest.lastIndexOf(' ',125);if(cut<45)cut=125;out.push({text:rest.slice(0,cut),pause:150});rest=rest.slice(cut).trim()}if(rest)out.push({text:rest,pause:/[.!?]$/.test(rest)?700:/[,;:]$/.test(rest)?430:260})}
-  if(out.length)out[out.length-1].pause=Math.max(out[out.length-1].pause,isHeading?1050:line.length<70?700:420);
+  for(const sentence of sentences){
+   let rest=sentence.trim();
+   while(rest.length>130){let cut=rest.lastIndexOf(' ',130);if(cut<45)cut=130;out.push({text:rest.slice(0,cut),pause:120});rest=rest.slice(cut).trim()}
+   if(rest)out.push({text:rest,pause:/[.!?]$/.test(rest)?560:/[,;:]$/.test(rest)?340:230});
+  }
+  if(heading&&out.length)out[out.length-1].pause=Math.max(out[out.length-1].pause,1250);
  }
- return out
+ return out;
 }
 function poetryLayout(contents){try{const style=contents.document.createElement('style');style.textContent='p,blockquote,div.stanza,div.estrofa,.poem,.poetry,.verse,section.poem{break-inside:avoid!important;page-break-inside:avoid!important;orphans:3;widows:3}h1,h2,h3{break-after:avoid!important;page-break-after:avoid!important}';contents.document.head.appendChild(style)}catch(e){console.warn('Diseño poético',e)}}
 function extractText(doc){if(!doc?.body)return '';const clone=doc.body.cloneNode(true);clone.querySelectorAll('nav,script,style,svg,aside,footer,header').forEach(e=>e.remove());clone.querySelectorAll('p,li,h1,h2,h3,blockquote').forEach(e=>e.appendChild(doc.createTextNode('\n')));return clone.innerText||clone.textContent||''}
