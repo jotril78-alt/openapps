@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/lorca-canciones.yml'
+      - 'scripts/lorca_canciones.py'
 permissions:
   contents: write
 jobs:
