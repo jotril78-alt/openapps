@@ -25,7 +25,14 @@ jobs:
           if 'mimetype' not in files or z.read('mimetype').strip()!=b'application/epub+zip': raise ValueError('No es EPUB')
           textfiles=[n for n in files if n.endswith(('.xhtml','.html','.htm'))]
           print('EPUB bytes',len(data),'capítulos/archivos HTML',len(textfiles))
-          if len(textfiles)<15: raise ValueError('Parece una selección, no Canciones íntegro')
+          from html import unescape
+          import re
+          body=' '.join(z.read(n).decode('utf-8','ignore') for n in textfiles)
+          plain=unescape(re.sub(r'<[^>]+>',' ',body)).lower()
+          markers=['teorías','nocturnos de la ventana','canciones para niños','andaluzas','tres retratos con sombra','juegos','canciones de luna','eros con bastón','canciones para terminar']
+          matched=[m for m in markers if m in plain]
+          print('Secciones encontradas:',matched)
+          if len(matched)<6 or len(plain)<12000: raise ValueError('Edición insuficiente; no se publica como completa')
           os.makedirs('lorca/epubs',exist_ok=True)
           open('lorca/epubs/canciones-1927.epub','wb').write(data)
           PY
