@@ -1,0 +1,22 @@
+name: Verify and cache Poema del cante jondo
+on:
+  push:
+    paths:
+      - 'lorca/descargar-cante-jondo.py'
+      - '.github/workflows/lorca-cante-jondo.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  cache:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download and validate eleven sections
+        run: python3 lorca/descargar-cante-jondo.py
+      - name: Commit verified sections
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add lorca/textos/cante-jondo/
+          git diff --cached --quiet || (git commit -m 'Cache verified Poema del cante jondo sections' && git push)
