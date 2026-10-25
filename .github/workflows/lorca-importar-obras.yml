@@ -1,0 +1,18 @@
+name: Discover Lorca public-domain editions
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download and validate EPUB candidates
+        run: python3 lorca/importar-obras.py
+      - name: Save discovery results
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add lorca/importacion-textos-info.json lorca/epubs/
+          git diff --cached --quiet || (git commit -m 'Import validated Lorca EPUB candidates' && git push)
