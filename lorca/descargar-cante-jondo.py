@@ -15,7 +15,7 @@ class Clean(html.parser.HTMLParser):
  def handle_data(self,d):
   if not self.skip:self.out.append(d.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;'))
 def fetch(title):
- params=urllib.parse.urlencode({'action':'parse','format':'json','formatversion':'2','prop':'text','page':'Poema del cante jondo/'+title})
+ params=urllib.parse.urlencode({'action':'parse','format':'json','formatversion':'2','prop':'text','page':title})
  req=urllib.request.Request('https://es.wikisource.org/w/api.php?'+params,headers={'User-Agent':'MiBibliotecaLorca/1.0 (educational; github.com/jotril78-alt/openapps)'})
  with urllib.request.urlopen(req,timeout=35) as r:data=json.load(r)
  if 'error' in data or not data.get('parse',{}).get('text'):raise ValueError('Missing source '+title)
@@ -29,6 +29,6 @@ for i,title in enumerate(SECTIONS):
  if len(plain.strip())<350:raise ValueError('Insufficient text: '+title)
  name='seccion-%02d.html'%(i+1)
  (out/name).write_text(body,encoding='utf-8')
- manifest.append({'title':title,'file':name,'characters':len(plain.strip()),'source':'https://es.wikisource.org/wiki/'+urllib.parse.quote(('Poema del cante jondo/'+title).replace(' ','_'))})
+ manifest.append({'title':title,'file':name,'characters':len(plain.strip()),'source':'https://es.wikisource.org/wiki/'+urllib.parse.quote(title.replace(' ','_'))})
  print(title,len(plain.strip()))
 (out/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
