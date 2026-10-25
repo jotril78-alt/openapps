@@ -48,7 +48,7 @@ for i,(title,url) in enumerate(entries):
     root=soup.select_one('#mw-content-text .mw-parser-output') or soup.select_one('#mw-content-text')
     if root is None:raise RuntimeError('Sin contenido: '+title)
     for br in root.select('br'): br.replace_with('\n')
-    for unwanted in root.select('nav,script,style,.mw-editsection,.noprint,.ws-noexport,.mw-references-wrap,.reference,.mw-headline'):
+    for unwanted in root.select('nav,script,style,.mw-editsection,.noprint,.ws-noexport,.mw-references-wrap,.reference,.mw-headline,.mw-collapsible,.catlinks'):
         unwanted.decompose()
     text=root.get_text('\n',strip=True)
     # Excluir metadatos iniciales de Wikisource que preceden al título en muchos poemas.
@@ -58,6 +58,8 @@ for i,(title,url) in enumerate(entries):
     lines=[line.strip() for line in text.splitlines()]
     lines=[line for line in lines if line and not line.startswith(('Obtenido de','Categoría:','Categorías:'))]
     if sum(len(line) for line in lines)<35 or len(lines)<3:raise RuntimeError('Poema incompleto: '+title+' '+url)
+    # Una página que devuelva de nuevo el índice NO es el poema.
+    if 'Canción de las siete doncellas' in text and 'Canción del día que se va' in text and len(text)>3000:raise RuntimeError('Se ha obtenido el índice en lugar de un poema: '+title)
     chapter=epub.EpubHtml(title=title,file_name=f'poema_{i+1:03}.xhtml',lang='es')
     chapter.content='<html xmlns="http://www.w3.org/1999/xhtml"><head><title>'+htmlmod.escape(title)+'</title></head><body><h2>'+htmlmod.escape(title)+'</h2>'+''.join('<p class="verso">'+htmlmod.escape(line)+'</p>' for line in lines)+'</body></html>'
     chapter.add_item(css);book.add_item(chapter);chapters.append(chapter)
