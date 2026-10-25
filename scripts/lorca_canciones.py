@@ -2,7 +2,7 @@
 """Construye Canciones 1927 desde las 80+ entradas del índice Wikisource.
 No publica un EPUB si una sola entrada del índice falla."""
 import re, pathlib, requests, html as htmlmod, time
-from urllib.parse import unquote, urlparse
+from urllib.parse import unquote, urljoin
 from bs4 import BeautifulSoup
 from ebooklib import epub
 
@@ -20,7 +20,7 @@ def get(url):
 source=BeautifulSoup(get(BASE+'/wiki/Canciones'),'lxml')
 main=source.select_one('#mw-content-text .mw-parser-output') or source.select_one('#mw-content-text')
 if not main:raise RuntimeError('Sin índice Wikisource')
-anchors=main.select('a[href^="/wiki/"]')
+anchors=[a for a in main.select('a[href]') if '/wiki/' in a.get('href','') or a.get('href','').startswith('./')]
 start=next((i for i,a in enumerate(anchors) if a.get_text(' ',strip=True).casefold()=='teorías'),None)
 if start is None:raise RuntimeError('No se encontró inicio del índice original')
 end=next((i for i,a in enumerate(anchors[start:],start) if a.get_text(' ',strip=True).casefold()=='canción del día que se va'),None)
@@ -31,9 +31,10 @@ for a in anchors[start:end+1]:
     label=a.get_text(' ',strip=True)
     href=a.get('href','')
     if not label or label in sections or ':' in unquote(href.removeprefix('/wiki/')):continue
-    entries.append((label,BASE+href))
+    entries.append((label,urljoin(BASE+'/wiki/Canciones',href)))
 print('Poemas del índice:',len(entries))
 if len(entries)<75:raise RuntimeError('No se hallaron al menos 75 entradas; no se publica')
+if len(entries)>100:raise RuntimeError('Índice sospechoso: demasiadas entradas')
 book=epub.EpubBook()
 book.set_identifier('lorca-canciones-1927-indice-wikisource')
 book.set_title('Canciones (1921-1924), edición de 1927')
@@ -46,7 +47,7 @@ for i,(title,url) in enumerate(entries):
     soup=BeautifulSoup(get(url),'lxml')
     root=soup.select_one('#mw-content-text .mw-parser-output') or soup.select_one('#mw-content-text')
     if root is None:raise RuntimeError('Sin contenido: '+title)
-    for br in root.select('br'): br.replace_with('\\n')
+    for br in root.select('br'): br.replace_with('\n')
     for unwanted in root.select('nav,script,style,.mw-editsection,.noprint,.ws-noexport,.mw-references-wrap,.reference,.mw-headline'):
         unwanted.decompose()
     text=root.get_text('\n',strip=True)
@@ -56,7 +57,7 @@ for i,(title,url) in enumerate(entries):
     text=text.replace('\u00a0',' ').strip()
     lines=[line.strip() for line in text.splitlines()]
     lines=[line for line in lines if line and not line.startswith(('Obtenido de','Categoría:','Categorías:'))]
-    if sum(len(line) for line in lines)<35:raise RuntimeError('Poema incompleto: '+title+' '+url)
+    if sum(len(line) for line in lines)<35 or len(lines)<3:raise RuntimeError('Poema incompleto: '+title+' '+url)
     chapter=epub.EpubHtml(title=title,file_name=f'poema_{i+1:03}.xhtml',lang='es')
     chapter.content='<html xmlns="http://www.w3.org/1999/xhtml"><head><title>'+htmlmod.escape(title)+'</title></head><body><h2>'+htmlmod.escape(title)+'</h2>'+''.join('<p class="verso">'+htmlmod.escape(line)+'</p>' for line in lines)+'</body></html>'
     chapter.add_item(css);book.add_item(chapter);chapters.append(chapter)
