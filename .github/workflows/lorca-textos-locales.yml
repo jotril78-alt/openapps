@@ -1,0 +1,22 @@
+name: Cache complete Lorca texts
+on:
+  push:
+    paths:
+      - 'lorca/descargar-bodas.py'
+      - '.github/workflows/lorca-textos-locales.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  cache:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download and validate all three acts
+        run: python3 lorca/descargar-bodas.py
+      - name: Publish verified static copies
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add lorca/textos/bodas-de-sangre/
+          git diff --cached --quiet || (git commit -m 'Cache complete Bodas de sangre acts' && git push)
