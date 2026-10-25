@@ -21,7 +21,7 @@
  #bottomBar button{min-width:41px;min-height:36px;padding:5px 8px;font-size:17px}
  #progress{min-width:0;font-size:13px}
 }
-</style></head><body><div id="app"><a id="close" class="close" href="./index.html#poesia" aria-label="Cerrar libro">×</a><header id="toolbar"><span style="width:46px"></span><strong id="title">Libro</strong><div><button id="minus" aria-label="Letra más pequeña">A−</button><button id="plus" aria-label="Letra más grande">A+</button><button id="night" aria-label="Modo nocturno">☾</button><button id="listen" aria-label="Pausar o reanudar narración">🔊 Leer</button><button id="audiobook" aria-label="Escuchar audiolibro interpretado por una persona" hidden>🎧 Audiolibro</button><button id="readHere" aria-label="Reiniciar la voz del dispositivo desde la página actual; no mueve el audiolibro grabado">📍 Voz desde aquí</button><button id="stopRead" aria-label="Detener lectura" hidden>■</button><select id="voice" aria-label="Voz de lectura" style="max-width:125px"></select><button id="tryVoice" aria-label="Probar otra voz española">Otra voz</button><button id="recordVoice" aria-label="Grabar audio de la pestaña">🎙 Grabar</button><select id="speed" aria-label="Velocidad de lectura"><option value="0.8" selected>Declamación</option><option value="1">Normal</option><option value="1.2">Rápida</option></select></div></header><div id="audioPanel" hidden style="position:fixed;z-index:30;inset:7%;background:#171615;color:#fff;border:2px solid #8a7968;border-radius:12px;padding:14px;box-shadow:0 0 0 100vmax #0009;overflow:auto"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center"><strong id="audioLabel">Audiolibro</strong><button id="audioClose" aria-label="Cerrar audiolibro">✕ Cerrar</button></div><p style="font:14px system-ui">Interpretación humana · necesita conexión a Internet. Para cambiar de minuto, utiliza los controles del reproductor. «Voz desde aquí» solo controla la voz del dispositivo, no esta grabación.</p><p id="lorcaSpainAlternative" hidden style="font:15px/1.5 system-ui"></p><div id="audioFrame"></div><p><a id="audioExternal" href="#" target="_blank" rel="noopener" style="color:#f2e6d5">Abrir en YouTube si no se reproduce aquí</a></p></div><div id="stage"><div id="viewer"></div><div id="thumbnails" aria-label="Navegación por capítulos"></div><div id="zoomnote">Toca el centro para mostrar controles</div><div id="message">Preparando el libro…</div></div><footer id="bottomBar"><button id="prev" aria-label="Página anterior">←</button><span id="progress">Cargando…</span><button id="next" aria-label="Página siguiente">→</button></footer></div><script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script><script src="https://cdn.jsdelivr.net/npm/epubjs@0.3.93/dist/epub.min.js"></script><script>
+</style></head><body><div id="app"><a id="close" class="close" href="./index.html#poesia" aria-label="Cerrar libro">×</a><header id="toolbar"><span style="width:46px"></span><strong id="title">Libro</strong><div><button id="minus" aria-label="Letra más pequeña">A−</button><button id="plus" aria-label="Letra más grande">A+</button><button id="night" aria-label="Modo nocturno">☾</button><button id="listen" aria-label="Pausar o reanudar narración">🔊 Leer</button><button id="audiobook" aria-label="Escuchar audiolibro interpretado por una persona" hidden>🎧 Audiolibro</button><button id="readHere" aria-label="Reiniciar la voz del dispositivo desde la página actual; no mueve el audiolibro grabado">📍 Voz desde aquí</button><button id="stopRead" aria-label="Detener lectura" hidden>■</button><select id="voice" aria-label="Voz de lectura" style="max-width:125px"></select><button id="tryVoice" aria-label="Probar otra voz española">Otra voz</button><select id="speed" aria-label="Velocidad de lectura"><option value="0.8" selected>Declamación</option><option value="1">Normal</option><option value="1.2">Rápida</option></select></div></header><div id="audioPanel" hidden style="position:fixed;z-index:30;inset:7%;background:#171615;color:#fff;border:2px solid #8a7968;border-radius:12px;padding:14px;box-shadow:0 0 0 100vmax #0009;overflow:auto"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center"><strong id="audioLabel">Audiolibro</strong><button id="audioClose" aria-label="Cerrar audiolibro">✕ Cerrar</button></div><p style="font:14px system-ui">Interpretación humana · necesita conexión a Internet. Para cambiar de minuto, utiliza los controles del reproductor. «Voz desde aquí» solo controla la voz del dispositivo, no esta grabación.</p><p id="lorcaSpainAlternative" hidden style="font:15px/1.5 system-ui"></p><div id="audioFrame"></div><p><a id="audioExternal" href="#" target="_blank" rel="noopener" style="color:#f2e6d5">Abrir en YouTube si no se reproduce aquí</a></p></div><div id="stage"><div id="viewer"></div><div id="thumbnails" aria-label="Navegación por capítulos"></div><div id="zoomnote">Toca el centro para mostrar controles</div><div id="message">Preparando el libro…</div></div><footer id="bottomBar"><button id="prev" aria-label="Página anterior">←</button><span id="progress">Cargando…</span><button id="next" aria-label="Página siguiente">→</button></footer></div><script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script><script src="https://cdn.jsdelivr.net/npm/epubjs@0.3.93/dist/epub.min.js"></script><script>
 // Perfil adaptativo: detección de capacidades, sin identificación personal ni envío de datos.
 const lorcaCapabilities={
  browser:(()=>{const u=navigator.userAgent;if(/SamsungBrowser\//i.test(u))return 'Samsung Internet';if(/EdgA?\//i.test(u))return 'Edge';if(/Firefox\//i.test(u))return 'Firefox';if(/Chrome\//i.test(u))return 'Chrome';if(/Safari\//i.test(u))return 'Safari';return 'Otro'})(),
@@ -100,33 +100,6 @@ document.getElementById('tryVoice').onclick=()=>{
  sample.lang=v?.lang||'es-ES';sample.rate=.8;sample.pitch=1;if(v)sample.voice=v;
  synth.cancel();synth.speak(sample);
  progress.textContent='Voz: '+(v?.name||'predeterminada')+(v&&!isMaleVoice(v)?' · género no confirmado':'');
-};
-// Captura local y voluntaria: el usuario elige la pestaña y autoriza compartir audio.
-let lorcaRecording=null;
-const recordButton=document.getElementById('recordVoice');
-recordButton.onclick=async()=>{
- if(lorcaRecording){lorcaRecording.recorder.stop();return}
- if(!navigator.mediaDevices?.getDisplayMedia||!window.MediaRecorder){alert('Este navegador no permite capturar audio de pestaña. Prueba Brave o Chrome y selecciona compartir audio de la pestaña.');return}
- let stream;
- try{
-  stream=await navigator.mediaDevices.getDisplayMedia({video:true,audio:true,preferCurrentTab:true,selfBrowserSurface:'include'});
-  if(!stream.getAudioTracks().length){stream.getTracks().forEach(t=>t.stop());alert('No se ha compartido el audio. En Brave, selecciona la pestaña de Lorca y activa «Compartir audio de la pestaña».');return}
-  const audioStream=new MediaStream(stream.getAudioTracks());
-  const mime=['audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus','audio/ogg'].find(x=>MediaRecorder.isTypeSupported(x))||'';
-  const recorder=new MediaRecorder(audioStream,mime?{mimeType:mime}:undefined),chunks=[];
-  recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
-  recorder.onstop=()=>{
-   stream.getTracks().forEach(t=>t.stop());lorcaRecording=null;recordButton.textContent='🎙 Grabar';
-   if(!chunks.length)return;
-   const type=recorder.mimeType||'audio/webm',ext=type.includes('ogg')?'ogg':'webm';
-   const url=URL.createObjectURL(new Blob(chunks,{type})),link=document.createElement('a');
-   link.href=url;link.download='lorca-muestra-voz-'+new Date().toISOString().replace(/[:.]/g,'-')+'.'+ext;
-   document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
-  };
-  stream.getTracks().forEach(t=>t.addEventListener('ended',()=>{if(recorder.state==='recording')recorder.stop()},{once:true}));
-  recorder.start();lorcaRecording={stream,recorder};recordButton.textContent='■ Guardar audio';
-  progress.textContent='Grabando audio compartido · pulsa Otra voz';
- }catch(e){stream?.getTracks().forEach(t=>t.stop());if(e.name!=='NotAllowedError')alert('No se pudo iniciar la captura: '+e.message)}
 };
 voiceSelect.onchange=()=>{localStorage.setItem('lorca-voice',voiceSelect.value);if(reading)stopReading()};
 speedSelect.value=localStorage.getItem('lorca-speed')||'0.8';speedSelect.onchange=()=>{localStorage.setItem('lorca-speed',speedSelect.value);if(reading)stopReading()};
