@@ -1,6 +1,6 @@
 // Keep books and reader available offline after their first successful download.
-const CACHE='lorca-libros-v6';
-const FILES=['./','./index.html','./lector-epub.html','./epubs/romancero-gitano.epub','./epubs/libro-de-poemas.epub','./prueba-local.html','./obras.html','./dos-poemas.html','./tres-poemas.html','./canciones-seleccion.html'];
+const CACHE='lorca-libros-v7';
+const FILES=['./','./index.html','./lector-epub.html','./epubs/romancero-gitano.epub','./epubs/libro-de-poemas.epub','./prueba-local.html','./obras.html','./dos-poemas.html','./tres-poemas.html','./canciones-seleccion.html','./canciones.html'];
 const CDN=new Set(['cdn.jsdelivr.net']);
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CACHE).then(cache=>Promise.allSettled(FILES.map(url=>cache.add(url)))));
