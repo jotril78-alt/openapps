@@ -31,4 +31,4 @@ for i,title in enumerate(SECTIONS):
  (out/name).write_text(body,encoding='utf-8')
  manifest.append({'title':title,'file':name,'characters':len(plain.strip()),'source':'https://es.wikisource.org/wiki/'+urllib.parse.quote(title.replace(' ','_'))})
  print(title,len(plain.strip()))
- (out/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+(out/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
