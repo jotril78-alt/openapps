@@ -15,18 +15,31 @@ stage.addEventListener('click',e=>{if(e.target===stage||e.target.id==='viewer')c
 document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')pageTurn(1);if(e.key==='ArrowLeft')pageTurn(-1);if(e.key==='Escape')controlsShow(false)});
 async function buildThumbs(){try{const nav=await book.loaded.navigation;const toc=nav.toc||[];const entries=toc.length?toc:[{label:'Inicio',href:book.spine.first().href}];for(const entry of entries){const b=document.createElement('button');b.className='thumb';b.textContent=entry.label||'Capítulo';b.onclick=()=>{rendition.display(entry.href);thumbs.classList.remove('show');controlsShow(false)};thumbs.appendChild(b)}}catch(e){console.warn('Navegación EPUB',e)}}
 let activeContents=null,reading=false,paused=false,queue=[],chunkIndex=0,utterance=null,audioToken=0,spineIndex=-1,pauseTimer=null,voiceBusy=false,lastAudioSectionText='',syncCursor=0,syncDoc=null,syncBusy=false;const synth=window.speechSynthesis,listen=document.getElementById('listen'),stopBtn=document.getElementById('stopRead'),voiceSelect=document.getElementById('voice'),speedSelect=document.getElementById('speed');
-function voiceScore(v){const n=v.name.toLowerCase();return (v.lang.toLowerCase()==='es-es'?30:0)+(v.localService?5:0)+(/male|masculin|hombre|jorge|diego|pablo|enrique|antonio|carlos|alvaro|álvaro/.test(n)?20:0)+(/natural|neural|premium|enhanced/.test(n)?10:0)}
-function voicesLoad(){if(!synth)return;const list=synth.getVoices().filter(v=>v.lang.toLowerCase().startsWith('es'));const chosen=localStorage.getItem('lorca-voice')||'';voiceSelect.replaceChildren();for(const v of list){const o=document.createElement('option');o.value=v.voiceURI;o.textContent=v.name+' ('+v.lang+')';voiceSelect.appendChild(o)}if(chosen&&list.some(v=>v.voiceURI===chosen))voiceSelect.value=chosen;else{const male=list.filter(v=>/male|masculin|hombre|jorge|diego|pablo|enrique|antonio|carlos|alvaro|álvaro|español.*hombre/i.test(v.name));const ranked=[...(male.length?male:list)].sort((a,b)=>voiceScore(b)-voiceScore(a));if(ranked.length)voiceSelect.value=ranked[0].voiceURI}voiceSelect.title='Voces españolas disponibles en este dispositivo; la voz seleccionada se conserva'}
+function isMaleVoice(v){return /\b(male|masculina?|hombre|jorge|diego|pablo|enrique|antonio|carlos|alvaro|álvaro|juan|miguel)\b/i.test(v.name)}
+function voiceScore(v){const n=v.name.toLowerCase();return (isMaleVoice(v)?100:0)+(v.lang.toLowerCase()==='es-es'?30:0)+(v.localService?5:0)+(/natural|neural|premium|enhanced/.test(n)?10:0)}
+function voicesLoad(){
+ if(!synth)return;
+ const list=synth.getVoices().filter(v=>v.lang.toLowerCase().startsWith('es'));
+ const chosen=localStorage.getItem('lorca-voice')||'';
+ voiceSelect.replaceChildren();
+ for(const v of list){const o=document.createElement('option');o.value=v.voiceURI;o.textContent=v.name+' ('+v.lang+')'+(isMaleVoice(v)?' · posible masculina':'');voiceSelect.appendChild(o)}
+ const male=list.filter(isMaleVoice).sort((a,b)=>voiceScore(b)-voiceScore(a));
+ if(chosen&&list.some(v=>v.voiceURI===chosen&&isMaleVoice(v)))voiceSelect.value=chosen;
+ else if(male.length){voiceSelect.value=male[0].voiceURI;localStorage.setItem('lorca-voice',male[0].voiceURI)}
+ else if(chosen&&list.some(v=>v.voiceURI===chosen))voiceSelect.value=chosen;
+ else if(list.length)voiceSelect.value=[...list].sort((a,b)=>voiceScore(b)-voiceScore(a))[0].voiceURI;
+ voiceSelect.title=male.length?'Voces españolas; se prioriza una posible voz masculina':'Este navegador no anuncia ninguna voz masculina española';
+}
 if(synth){voicesLoad();synth.addEventListener?.('voiceschanged',voicesLoad)}
 document.getElementById('tryVoice').onclick=()=>{
- const list=[...voiceSelect.options];if(!list.length){alert('Android no ha proporcionado voces españolas alternativas.');return}
+ const list=[...voiceSelect.options];if(!list.length){alert('Android no ha proporcionado voces españolas.');return}
  stopReading();voiceSelect.selectedIndex=(voiceSelect.selectedIndex+1)%list.length;
  localStorage.setItem('lorca-voice',voiceSelect.value);
  const v=synth.getVoices().find(x=>x.voiceURI===voiceSelect.value);
  const sample=new SpeechSynthesisUtterance('Verde que te quiero verde. Verde viento. Verdes ramas.');
- sample.lang='es-ES';sample.rate=.8;sample.pitch=.9;if(v)sample.voice=v;
+ sample.lang=v?.lang||'es-ES';sample.rate=.8;sample.pitch=1;if(v)sample.voice=v;
  synth.cancel();synth.speak(sample);
- progress.textContent='Probando voz: '+(v?.name||'predeterminada');
+ progress.textContent='Voz: '+(v?.name||'predeterminada')+(v&&!isMaleVoice(v)?' · género no confirmado':'');
 };
 voiceSelect.onchange=()=>{localStorage.setItem('lorca-voice',voiceSelect.value);if(reading)stopReading()};
 speedSelect.value=localStorage.getItem('lorca-speed')||'0.8';speedSelect.onchange=()=>{localStorage.setItem('lorca-speed',speedSelect.value);if(reading)stopReading()};
@@ -90,7 +103,7 @@ function syncSpokenPhrase(phrase,token){
  }catch(e){syncBusy=false;console.warn('Sincronización de lectura',e)}
 }
 function speakNext(token){if(!reading||paused||token!==audioToken)return;if(chunkIndex>=queue.length){nextAudioSection(token);return}const phrase=queue[chunkIndex++];if(!phrase.text){speakNext(token);return}utterance=new SpeechSynthesisUtterance(phrase.text);utterance.lang='es-ES';utterance.rate=Math.max(0.65,Number(speedSelect.value));utterance.pitch=0.82;
-const selected=synth.getVoices().find(v=>v.voiceURI===voiceSelect.value&&v.lang.toLowerCase().startsWith('es'));if(selected)utterance.voice=selected;utterance.onstart=()=>{voiceBusy=true;syncSpokenPhrase(phrase.text,token)};utterance.onend=()=>{voiceBusy=false;if(reading&&token===audioToken&&!paused)pauseTimer=setTimeout(()=>{if(reading&&token===audioToken&&!paused)speakNext(token)},phrase.pause)};utterance.onerror=e=>{voiceBusy=false;if(token!==audioToken)return;console.error('Error de síntesis',e.error);if(e.error==='interrupted'||e.error==='canceled')return;stopReading();listen.textContent='Error de voz: '+e.error};try{synth.speak(utterance)}catch(e){stopReading();alert('No se pudo iniciar la voz: '+e.message)}}
+const selected=synth.getVoices().find(v=>v.voiceURI===voiceSelect.value&&v.lang.toLowerCase().startsWith('es'));if(selected){utterance.voice=selected;utterance.lang=selected.lang}utterance.onstart=()=>{voiceBusy=true;syncSpokenPhrase(phrase.text,token)};utterance.onend=()=>{voiceBusy=false;if(reading&&token===audioToken&&!paused)pauseTimer=setTimeout(()=>{if(reading&&token===audioToken&&!paused)speakNext(token)},phrase.pause)};utterance.onerror=e=>{voiceBusy=false;if(token!==audioToken)return;console.error('Error de síntesis',e.error);if(e.error==='interrupted'||e.error==='canceled')return;stopReading();listen.textContent='Error de voz: '+e.error};try{synth.speak(utterance)}catch(e){stopReading();alert('No se pudo iniciar la voz: '+e.message)}}
 function beginReading(){if(!synth||typeof SpeechSynthesisUtterance==='undefined'){alert('Este navegador no ofrece lectura en voz alta.');return}const doc=activeContents?.document||rendition?.getContents()?.[0]?.document;if(!doc){alert('Espera a que se abra el libro.');return}queue=makeChunks(extractFromCurrentPosition(doc));if(!queue.some(x=>x.text.trim())){alert('No hay texto disponible en esta sección.');return}reading=true;paused=false;chunkIndex=0;spineIndex=currentSpineIndex();lastAudioSectionText=extractText(doc).replace(/\s+/g,' ').trim();syncDoc=null;syncCursor=0;const token=++audioToken;stopBtn.hidden=false;listen.textContent='⏸ Pausar';controlsShow(true);speakNext(token)}
 document.getElementById('readHere').onclick=()=>{stopReading();beginReading()};
 listen.onclick=()=>{if(!reading){beginReading();return}if(paused){paused=false;listen.textContent='⏸ Pausar';speakNext(audioToken)}else{paused=true;clearTimeout(pauseTimer);audioToken++;if(voiceBusy||synth.speaking)chunkIndex=Math.max(0,chunkIndex-1);voiceBusy=false;synth.cancel();listen.textContent='▶ Seguir'}};
