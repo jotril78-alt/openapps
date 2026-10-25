@@ -1,4 +1,4 @@
-name: Lorca - Canciones EPUB integro
+name: Lorca - Canciones EPUB integro (indice verificado)
 on:
   workflow_dispatch:
   push:
