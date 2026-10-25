@@ -28,10 +28,18 @@ La biblioteca es un corpus cerrado: obras de Lorca, archivos EPUB/HTML alojados 
 ## Presupuesto de datos y rendimiento (2026-10-25)
 - Catálogo inicial HTML y JSON ligero, sin imágenes externas, sin fuentes web ni frameworks.
 - EPUB: una descarga solo al abrir el libro; preferir EPUB sin imágenes ornamentales; comprimir internamente, no duplicar en formatos idénticos.
-- Audio: Opus 24–32 kb/s mono para voz cuando el navegador lo soporte; MP3 mono 40–48 kb/s como alternativa de compatibilidad, generados una sola vez. **No descargar ambos**: elegir formato reproducible y usar un único recurso.
+- Audio: MP3 mono 40–48 kb/s como formato principal; Opus 24–32 kb/s solo como alternativa opcional tras pruebas, generados una sola vez. **No descargar ambos**: elegir formato reproducible y usar un único recurso.
 - Audio por capítulo/poema, no un fichero gigantesco: el usuario descarga solo lo que escucha; reproducción HTML con precarga metadata o none, nunca auto.
 - Índice de sincronización compacto en JSON, descargado al iniciar audio, no al abrir catálogo.
 - Caché: guardar opcionalmente EPUB/audio ya abiertos, nunca precargar toda la colección en la tableta.
 - Compresión HTTP, encabezados Cache-Control y rangos de audio dependen del alojamiento GitHub Pages; comprobarlos antes de afirmar ahorro efectivo.
 - Validación: registrar tamaño de catálogo, EPUB, audio por minuto y bytes transferidos al abrir catálogo, abrir libro y escuchar primer poema.
 - Importador: descargas de candidatos limitadas a 2.5 MB por archivo; no confundir descarga automática con autorización legal de republicación.
+
+## Política de compatibilidad y reversión (aprobada)
+- Rama de referencia inmutable por convención: `backup/lorca-estable-2026-10-25`, basada en el commit `52258eff00604d36d418a198f89811134fe3121b`. No escribir en ella.
+- No cambiar la estructura de enlaces públicos ni sustituir el lector existente sin prueba en tablet y navegadores comunes.
+- MP3 mono es el audio de referencia por compatibilidad. Opus es opcional y nunca requisito.
+- Desplegar las mejoras de importación y catálogo de manera aditiva. Mantener los tres libros existentes y sus rutas.
+- Antes de publicar un cambio potencialmente incompatible, generar copia de la versión estable y una instrucción de reversión basada en commit, revisando si otros proyectos comparten el repositorio.
+- No revertir `main` entero ni forzar push: el repositorio también aloja otras aplicaciones. Restaurar solo archivos de `lorca/` desde la rama estable, con un commit nuevo y revisión previa.
