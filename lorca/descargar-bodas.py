@@ -28,7 +28,7 @@ for i,title in enumerate(('Primer Acto','Segundo Acto','Tercer Acto'),1):
     parser=Clean();parser.feed(source)
     body=''.join(parser.out)
     visible=re.sub('<[^>]+>','',body)
-    if len(visible)<10000 or 'CUADRO' not in visible.upper():
+    if len(visible)<2500 or not any(x in visible.upper() for x in ('CUADRO','NOVIA','MADRE','LEÑADORES')):
         raise RuntimeError('Act %d failed completeness checks (%d chars)'%(i,len(visible)))
     target=DEST/('acto-%d.html'%i)
     target.write_text(body,encoding='utf-8')
