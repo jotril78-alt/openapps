@@ -20,7 +20,7 @@ def fetch(url):
  req=urllib.request.Request(url,headers=AGENT)
  with urllib.request.urlopen(req,timeout=25) as r:
   if r.status!=200:raise RuntimeError('HTTP '+str(r.status))
-  return r.read(12000000)
+  return r.read(2500001)
 def links(data):
  p=Links();p.feed(data.decode('utf-8','replace'));return p.links
 def slug(url):
@@ -33,7 +33,7 @@ def valid_epub(b):
  except Exception:return False
 records=[]
 seen=set()
-for page in range(1,4):
+for page in range(1,3):
  listing=BASE+'/textos/autor/federico-garcia-lorca'+('/pag/'+str(page) if page>1 else '')
  try: anchors=links(fetch(listing))
  except Exception as e: print('Index error:',listing,str(e));continue
@@ -48,8 +48,10 @@ for page in range(1,4):
    for target in downloads[:3]:
     if urllib.parse.urlparse(target).netloc not in ('www.textos.info','textos.info'):continue
     b=fetch(target)
-    if not valid_epub(b):continue
-    name='textos-'+slug(url)+'.epub';(OUT/name).write_bytes(b)
+    if len(b)>2500000 or not valid_epub(b):continue
+    name='textos-'+slug(url)+'.epub'; target_path=OUT/name
+    if target_path.exists() and hashlib.sha256(target_path.read_bytes()).digest()==hashlib.sha256(b).digest(): pass
+    else: target_path.write_bytes(b)
     rec.update(epub='epubs/'+name,status='downloaded-needs-edition-review',sha256=hashlib.sha256(b).hexdigest(),bytes=len(b))
     break
   except Exception as e:rec['error']=str(e)[:200]
