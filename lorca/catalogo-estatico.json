@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "mode": "static-first",
+  "narration": {
+    "preferred": "pre-recorded",
+    "format": "mp3",
+    "fallback": "browser-speech",
+    "reference": "Pablo voice 2; preserve pauses",
+    "ready": false
+  },
+  "books": [
+    {
+      "id": "romancero",
+      "title": "Romancero gitano",
+      "epub": "epubs/romancero-gitano.epub",
+      "audio": null
+    },
+    {
+      "id": "poemas",
+      "title": "Libro de poemas",
+      "epub": "epubs/libro-de-poemas.epub",
+      "audio": null
+    }
+  ],
+  "note": "No audio files have been generated or published. No claim of complete works."
+}
