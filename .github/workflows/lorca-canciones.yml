@@ -1,4 +1,4 @@
-name: Lorca - importar Canciones completo
+name: Lorca - Canciones EPUB integro
 on:
   workflow_dispatch:
   push:
@@ -11,34 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Descargar EPUB de Wikisource y comprobar integridad
-        run: |
-          python - <<'PY'
-          import urllib.request,zipfile,io,os
-          from urllib.parse import urlencode
-          url='https://ws-export.wmcloud.org/?'+urlencode({'lang':'es','page':'Canciones','format':'epub'})
-          req=urllib.request.Request(url,headers={'User-Agent':'LorcaLibrary/1.0 (public domain ebook verification)'})
-          with urllib.request.urlopen(req,timeout=100) as resp: data=resp.read()
-          if len(data)<20000: raise ValueError('EPUB demasiado pequeño: '+str(len(data)))
-          z=zipfile.ZipFile(io.BytesIO(data))
-          files=z.namelist()
-          if 'mimetype' not in files or z.read('mimetype').strip()!=b'application/epub+zip': raise ValueError('No es EPUB')
-          textfiles=[n for n in files if n.endswith(('.xhtml','.html','.htm'))]
-          print('EPUB bytes',len(data),'capítulos/archivos HTML',len(textfiles))
-          from html import unescape
-          import re
-          body=' '.join(z.read(n).decode('utf-8','ignore') for n in textfiles)
-          plain=unescape(re.sub(r'<[^>]+>',' ',body)).lower()
-          markers=['teorías','nocturnos de la ventana','canciones para niños','andaluzas','tres retratos con sombra','juegos','canciones de luna','eros con bastón','canciones para terminar']
-          matched=[m for m in markers if m in plain]
-          print('Secciones encontradas:',matched)
-          if len(matched)<6 or len(plain)<12000: raise ValueError('Edición insuficiente; no se publica como completa')
-          os.makedirs('lorca/epubs',exist_ok=True)
-          open('lorca/epubs/canciones-1927.epub','wb').write(data)
-          PY
-      - name: Guardar EPUB verificado
+      - name: Instalar herramientas EPUB
+        run: python -m pip install --quiet requests beautifulsoup4 ebooklib lxml
+      - name: Importar obra y verificar poemas
+        run: python scripts/lorca_canciones.py
+      - name: Guardar volumen verificado
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add lorca/epubs/canciones-1927.epub
-          git diff --cached --quiet || (git commit -m "Lorca: Canciones completo en EPUB local verificado" && git push)
+          git diff --cached --quiet || (git commit -m "Lorca: EPUB íntegro de Canciones validado" && git push)
