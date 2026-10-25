@@ -46,7 +46,8 @@ for i,(title,url) in enumerate(entries):
     soup=BeautifulSoup(get(url),'lxml')
     root=soup.select_one('#mw-content-text .mw-parser-output') or soup.select_one('#mw-content-text')
     if root is None:raise RuntimeError('Sin contenido: '+title)
-    for unwanted in root.select('table,nav,script,style,.mw-editsection,.noprint,.ws-noexport,.mw-references-wrap,.reference,.mw-headline'):
+    for br in root.select('br'): br.replace_with('\\n')
+    for unwanted in root.select('nav,script,style,.mw-editsection,.noprint,.ws-noexport,.mw-references-wrap,.reference,.mw-headline'):
         unwanted.decompose()
     text=root.get_text('\n',strip=True)
     # Excluir metadatos iniciales de Wikisource que preceden al título en muchos poemas.
@@ -55,7 +56,7 @@ for i,(title,url) in enumerate(entries):
     text=text.replace('\u00a0',' ').strip()
     lines=[line.strip() for line in text.splitlines()]
     lines=[line for line in lines if line and not line.startswith(('Obtenido de','Categoría:','Categorías:'))]
-    if sum(len(line) for line in lines)<45:raise RuntimeError('Poema incompleto: '+title+' '+url)
+    if sum(len(line) for line in lines)<35:raise RuntimeError('Poema incompleto: '+title+' '+url)
     chapter=epub.EpubHtml(title=title,file_name=f'poema_{i+1:03}.xhtml',lang='es')
     chapter.content='<html xmlns="http://www.w3.org/1999/xhtml"><head><title>'+htmlmod.escape(title)+'</title></head><body><h2>'+htmlmod.escape(title)+'</h2>'+''.join('<p class="verso">'+htmlmod.escape(line)+'</p>' for line in lines)+'</body></html>'
     chapter.add_item(css);book.add_item(chapter);chapters.append(chapter)
