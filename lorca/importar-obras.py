@@ -34,7 +34,7 @@ def valid_epub(b):
 records=[]
 seen=set()
 for page in range(1,4):
- listing=BASE+'/textos/autor/federico-garcia-lorca'+('?/pagina='+str(page) if page>1 else '')
+ listing=BASE+'/textos/autor/federico-garcia-lorca'+('/pag/'+str(page) if page>1 else '')
  try: anchors=links(fetch(listing))
  except Exception as e: print('Index error:',listing,str(e));continue
  candidates=[urllib.parse.urljoin(BASE,h) for h,t in anchors if '/textos/autor/federico-garcia-lorca/' in h]
