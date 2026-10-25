@@ -1,0 +1,456 @@
+{
+  "version": 1,
+  "updated": "2026-10-25",
+  "scope": "Candidate bibliography; not a claim of full text availability",
+  "references": [
+    "https://www.cervantes.es/bibliotecas_documentacion_espanol/biografias/tokio_federico_garcia_lorca_1.htm",
+    "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+    "https://www.centrofedericogarcialorca.es/es/biblioteca"
+  ],
+  "counts": {
+    "candidates": 44,
+    "locallyReferenced": 3
+  },
+  "works": [
+    {
+      "id": "libro-de-poemas",
+      "title": "Libro de poemas",
+      "category": "poesia",
+      "status": "repository-path-referenced-unverified",
+      "local": "epubs/libro-de-poemas.epub",
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "poema-del-cante-jondo",
+      "title": "Poema del cante jondo",
+      "category": "poesia",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "primeras-canciones",
+      "title": "Primeras canciones",
+      "category": "poesia",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "canciones",
+      "title": "Canciones",
+      "category": "poesia",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "romancero-gitano",
+      "title": "Romancero gitano",
+      "category": "poesia",
+      "status": "repository-path-referenced-unverified",
+      "local": "epubs/romancero-gitano.epub",
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "suites",
+      "title": "Suites",
+      "category": "poesia",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "poeta-en-nueva-york",
+      "title": "Poeta en Nueva York",
+      "category": "poesia",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "llanto-por-ignacio-sanchez-mejias",
+      "title": "Llanto por Ignacio Sánchez Mejías",
+      "category": "poesia",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "seis-poemas-galegos",
+      "title": "Seis poemas galegos",
+      "category": "poesia",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "divan-del-tamarit",
+      "title": "Diván del Tamarit",
+      "category": "poesia",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "sonetos-del-amor-oscuro",
+      "title": "Sonetos del amor oscuro",
+      "category": "poesia",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "oda-a-salvador-dali",
+      "title": "Oda a Salvador Dalí",
+      "category": "poesia",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "tierra-y-luna",
+      "title": "Tierra y luna",
+      "category": "poesia",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "poemas-en-prosa",
+      "title": "Poemas en prosa",
+      "category": "poesia",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "poesia-inedita-de-juventud",
+      "title": "Poesía inédita de juventud",
+      "category": "poesia",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "poemas-sueltos",
+      "title": "Poemas sueltos",
+      "category": "poesia",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "el-maleficio-de-la-mariposa",
+      "title": "El maleficio de la mariposa",
+      "category": "teatro",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "mariana-pineda",
+      "title": "Mariana Pineda",
+      "category": "teatro",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "la-zapatera-prodigiosa",
+      "title": "La zapatera prodigiosa",
+      "category": "teatro",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "el-publico",
+      "title": "El público",
+      "category": "teatro",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "asi-que-pasen-cinco-anos",
+      "title": "Así que pasen cinco años",
+      "category": "teatro",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "bodas-de-sangre",
+      "title": "Bodas de sangre",
+      "category": "teatro",
+      "status": "repository-path-referenced-unverified",
+      "local": "bodas-de-sangre.html",
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "yerma",
+      "title": "Yerma",
+      "category": "teatro",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "dona-rosita-la-soltera-o-el-lenguaje-de-las-flores",
+      "title": "Doña Rosita la soltera o el lenguaje de las flores",
+      "category": "teatro",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "la-casa-de-bernarda-alba",
+      "title": "La casa de Bernarda Alba",
+      "category": "teatro",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "amor-de-don-perlimplin-con-belisa-en-su-jardin",
+      "title": "Amor de don Perlimplín con Belisa en su jardín",
+      "category": "teatro",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "retablillo-de-don-cristobal",
+      "title": "Retablillo de don Cristóbal",
+      "category": "teatro",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "tragicomedia-de-don-cristobal-y-la-sena-rosita",
+      "title": "Tragicomedia de don Cristóbal y la señá Rosita",
+      "category": "teatro",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "la-nina-que-riega-la-albahaca-y-el-principe-pregunton",
+      "title": "La niña que riega la albahaca y el príncipe preguntón",
+      "category": "teatro",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "lola-la-comedianta",
+      "title": "Lola la comedianta",
+      "category": "teatro",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "comedia-sin-titulo",
+      "title": "Comedia sin título",
+      "category": "teatro",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "los-suenos-de-mi-prima-aurelia",
+      "title": "Los sueños de mi prima Aurelia",
+      "category": "teatro",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "teatro-inedito-de-juventud",
+      "title": "Teatro inédito de juventud",
+      "category": "teatro",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "santa-lucia-y-san-lazaro",
+      "title": "Santa Lucía y San Lázaro",
+      "category": "teatro",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "el-primitivo-auto-sentimental",
+      "title": "El primitivo auto sentimental",
+      "category": "teatro",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "impresiones-y-paisajes",
+      "title": "Impresiones y paisajes",
+      "category": "prosa",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "prosa-inedita-de-juventud",
+      "title": "Prosa inédita de juventud",
+      "category": "prosa",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "viaje-a-la-luna",
+      "title": "Viaje a la luna",
+      "category": "prosa",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "alocucion-al-pueblo-de-fuente-vaqueros",
+      "title": "Alocución al pueblo de Fuente Vaqueros",
+      "category": "prosa",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "conferencias",
+      "title": "Conferencias",
+      "category": "prosa",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "juego-y-teoria-del-duende",
+      "title": "Juego y teoría del duende",
+      "category": "prosa",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "un-poeta-en-nueva-york-conferencia",
+      "title": "Un poeta en Nueva York (conferencia)",
+      "category": "prosa",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "epistolario-y-correspondencia",
+      "title": "Epistolario y correspondencia",
+      "category": "prosa",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    },
+    {
+      "id": "dibujos-y-obra-grafica",
+      "title": "Dibujos y obra gráfica",
+      "category": "prosa",
+      "status": "referenced-not-ingested",
+      "local": null,
+      "source": "https://www.cervantesvirtual.com/portales/federico_garcia_lorca/bibliografia/",
+      "audio": null,
+      "rights": "edition-and-recording-review-required"
+    }
+  ]
+}
