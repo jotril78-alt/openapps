@@ -20,7 +20,9 @@ def get(url):
 source=BeautifulSoup(get(BASE+'/wiki/Canciones'),'lxml')
 main=source.select_one('#mw-content-text .mw-parser-output') or source.select_one('#mw-content-text')
 if not main:raise RuntimeError('Sin índice Wikisource')
+# Utilizar únicamente enlaces del índice, ignorando la interfaz y enlaces a obras externas.
 anchors=[a for a in main.select('a[href]') if '/wiki/' in a.get('href','') or a.get('href','').startswith('./')]
+print('Enlaces candidatos en el índice:',len(anchors),flush=True)
 start=next((i for i,a in enumerate(anchors) if a.get_text(' ',strip=True).casefold()=='teorías'),None)
 if start is None:raise RuntimeError('No se encontró inicio del índice original')
 end=next((i for i,a in enumerate(anchors[start:],start) if a.get_text(' ',strip=True).casefold()=='canción del día que se va'),None)
@@ -50,7 +52,10 @@ for i,(title,url) in enumerate(entries):
     for br in root.select('br'): br.replace_with('\n')
     for unwanted in root.select('nav,script,style,.mw-editsection,.noprint,.ws-noexport,.mw-references-wrap,.reference,.mw-headline,.mw-collapsible,.catlinks'):
         unwanted.decompose()
-    text=root.get_text('\n',strip=True)
+    # Buscar el texto literario en el elemento de transcripción antes de usar
+    # todo el cuerpo, que también contiene metadatos y enlaces de Wikisource.
+    literary=root.select_one('.ws-poem, .poem, .mw-poem')
+    text=(literary or root).get_text('\\n',strip=True)
     # Excluir metadatos iniciales de Wikisource que preceden al título en muchos poemas.
     pos=text.casefold().find(title.casefold())
     if pos>=0:text=text[pos+len(title):].strip()
@@ -58,6 +63,7 @@ for i,(title,url) in enumerate(entries):
     lines=[line.strip() for line in text.splitlines()]
     lines=[line for line in lines if line and not line.startswith(('Obtenido de','Categoría:','Categorías:'))]
     if sum(len(line) for line in lines)<35 or len(lines)<3:raise RuntimeError('Poema incompleto: '+title+' '+url)
+    print('Validado',i+1,'/',len(entries),title,'versos:',len(lines),flush=True)
     # Una página que devuelva de nuevo el índice NO es el poema.
     if 'Canción de las siete doncellas' in text and 'Canción del día que se va' in text and len(text)>3000:raise RuntimeError('Se ha obtenido el índice en lugar de un poema: '+title)
     chapter=epub.EpubHtml(title=title,file_name=f'poema_{i+1:03}.xhtml',lang='es')
