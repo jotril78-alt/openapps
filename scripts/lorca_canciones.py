@@ -17,6 +17,35 @@ def get(url):
             if attempt==3:raise
             time.sleep(2+attempt*3)
 
+# Intentar primero el EPUB oficial de Wikisource; si falla, reconstruir.
+def attempt_official():
+    import io, zipfile
+    endpoint='https://ws-export.wmcloud.org/?lang=es&page=Canciones&format=epub'
+    try:
+        response=session.get(endpoint,timeout=65)
+        response.raise_for_status()
+        raw=response.content
+        with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+            if archive.read('mimetype').strip()!=b'application/epub+zip':
+                raise ValueError('MIME EPUB incorrecto')
+            pages=[n for n in archive.namelist() if n.endswith(('.xhtml','.html'))]
+            corpus=' '.join(archive.read(n).decode('utf-8','ignore').lower() for n in pages)
+            # Comprobar títulos distribuidos a lo largo del volumen, no solo tamaño.
+            markers=['canción de las siete doncellas','la canción del colegial','cancioncilla sevillana','la luna asoma','lucía martínez','canción del día que se va']
+            count=sum(marker in corpus for marker in markers)
+            print('WSexport: tamaño',len(raw),'páginas HTML',len(pages),'marcadores',count,flush=True)
+            if len(raw)<25000 or count<5: raise ValueError('Exportación incompleta')
+        output=pathlib.Path('lorca/epubs/canciones-1927.epub')
+        output.parent.mkdir(parents=True,exist_ok=True)
+        output.write_bytes(raw)
+        print('EPUB oficial validado:',output,flush=True)
+        return True
+    except Exception as ex:
+        print('WSexport no disponible o inválido:',repr(ex),flush=True)
+        return False
+
+if attempt_official(): raise SystemExit(0)
+
 source=BeautifulSoup(get(BASE+'/wiki/Canciones'),'lxml')
 main=source.select_one('#mw-content-text .mw-parser-output') or source.select_one('#mw-content-text')
 if not main:raise RuntimeError('Sin índice Wikisource')
