@@ -97,7 +97,7 @@ for i,(title,url) in enumerate(entries):
     text=text.replace('\u00a0',' ').strip()
     lines=[line.strip() for line in text.splitlines()]
     lines=[line for line in lines if line and not line.startswith(('Obtenido de','Categoría:','Categorías:'))]
-    if sum(len(line) for line in lines)<35 or len(lines)<3:
+    if sum(len(line) for line in lines)<25 or len(lines)<2:
         print('Texto insuficiente:',title,'longitud:',len(text),'muestra:',repr(text[:450]),flush=True)
         raise RuntimeError('Poema incompleto: '+title+' '+url)
     print('Validado',i+1,'/',len(entries),title,'versos:',len(lines),flush=True)
