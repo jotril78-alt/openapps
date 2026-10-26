@@ -90,14 +90,16 @@ for i,(title,url) in enumerate(entries):
     # Buscar el texto literario en el elemento de transcripción antes de usar
     # todo el cuerpo, que también contiene metadatos y enlaces de Wikisource.
     literary=root.select_one('.ws-poem, .poem, .mw-poem')
-    text=(literary or root).get_text('\\n',strip=True)
+    text=(literary or root).get_text(chr(10),strip=True)
     # Excluir metadatos iniciales de Wikisource que preceden al título en muchos poemas.
     pos=text.casefold().find(title.casefold())
     if pos>=0:text=text[pos+len(title):].strip()
     text=text.replace('\u00a0',' ').strip()
     lines=[line.strip() for line in text.splitlines()]
     lines=[line for line in lines if line and not line.startswith(('Obtenido de','Categoría:','Categorías:'))]
-    if sum(len(line) for line in lines)<35 or len(lines)<3:raise RuntimeError('Poema incompleto: '+title+' '+url)
+    if sum(len(line) for line in lines)<35 or len(lines)<3:
+        print('Texto insuficiente:',title,'longitud:',len(text),'muestra:',repr(text[:450]),flush=True)
+        raise RuntimeError('Poema incompleto: '+title+' '+url)
     print('Validado',i+1,'/',len(entries),title,'versos:',len(lines),flush=True)
     # Una página que devuelva de nuevo el índice NO es el poema.
     if 'Canción de las siete doncellas' in text and 'Canción del día que se va' in text and len(text)>3000:raise RuntimeError('Se ha obtenido el índice en lugar de un poema: '+title)
