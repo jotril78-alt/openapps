@@ -1,16 +1,20 @@
 {
   "resultado": "failure",
-  "ejecucion": "40250773091",
-  "fecha_utc": "2026-10-26T00:44:33.035678+00:00",
+  "ejecucion": "40250896586",
+  "fecha_utc": "2026-10-26T00:46:01.843441+00:00",
   "epub_disponible": false,
   "ultimas_lineas": [
     "WSexport no disponible o inválido: HTTPError('503 Server Error: Service Unavailable for url: https://ws-export.wmcloud.org/?lang=es&page=Canciones&format=epub')",
     "Enlaces candidatos en el índice: 111",
-    "Poemas del índice: 0",
+    "Muestra enlaces: [('cómo empezar una página', 'https://es.wikisource.org/wiki/Ayuda:Cómo_empezar_una_página'), ('cómo publicar un texto', 'https://es.wikisource.org/wiki/Ayuda:Cómo_publicar_un_texto'), ('Índice:García Lorca - Canciones (1927).pdf', 'https://es.wikisource.org/wiki/Índice:García_Lorca_-_Canciones_(1927).pdf'), ('Federico García Lorca', 'https://es.wikisource.org/wiki/Autor:Federico_García_Lorca'), ('', 'https://es.wikisource.org/wiki/Archivo:PD-icon.svg'), ('España', 'https://es.wikisource.org/wiki/Wikisource:Duración_de_derechos_de_autor_por_país#España'), ('80 p.m.a. o menos', 'https://es.wikisource.org/wiki/Wikisource:Duración_de_derechos_de_autor_por_país#80_p.m.a.'), ('', 'https://es.wikisource.org/wiki/Archivo:OOjs_UI_icon_book-ltr.svg'), ('otras versiones', 'https://www.wikidata.org/wiki/Q56740006'), ('', 'https://es.wikisource.org/wiki/d:'), ('metadatos', 'https://www.wikidata.org/wiki/Q124343899'), ('Teorías', 'https://es.wikisource.org/wiki/Teorías')]",
+    "Poemas del índice: 89",
+    "Muestra del índice: Canción de las siete doncellas https://es.wikisource.org/wiki/Canción_de_las_siete_doncellas",
+    "Muestra del índice: Nocturno esquemático https://es.wikisource.org/wiki/Nocturno_esquemático",
+    "Muestra del índice: La canción del colegial https://es.wikisource.org/wiki/La_canción_del_colegial",
     "Traceback (most recent call last):",
-    "  File \"/home/runner/work/openapps/openapps/scripts/lorca_canciones.py\", line 67, in <module>",
-    "    if len(entries)<75:raise RuntimeError('No se hallaron al menos 75 entradas; no se publica')",
-    "                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
-    "RuntimeError: No se hallaron al menos 75 entradas; no se publica"
+    "  File \"/home/runner/work/openapps/openapps/scripts/lorca_canciones.py\", line 100, in <module>",
+    "    if sum(len(line) for line in lines)<35 or len(lines)<3:raise RuntimeError('Poema incompleto: '+title+' '+url)",
+    "                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "RuntimeError: Poema incompleto: Canción de las siete doncellas https://es.wikisource.org/wiki/Canción_de_las_siete_doncellas"
   ]
 }
