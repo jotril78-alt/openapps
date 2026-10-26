@@ -92,8 +92,9 @@ for i,(title,url) in enumerate(entries):
     literary=root.select_one('.ws-poem, .poem, .mw-poem')
     text=(literary or root).get_text(chr(10),strip=True)
     # Excluir metadatos iniciales de Wikisource que preceden al título en muchos poemas.
-    pos=text.casefold().find(title.casefold())
-    if pos>=0:text=text[pos+len(title):].strip()
+    rows=text.splitlines()
+    if rows and rows[0].strip().casefold()==title.casefold():
+        text=chr(10).join(rows[1:]).strip()
     text=text.replace('\u00a0',' ').strip()
     lines=[line.strip() for line in text.splitlines()]
     lines=[line for line in lines if line and not line.startswith(('Obtenido de','Categoría:','Categorías:'))]
