@@ -66,6 +66,11 @@ for a in anchors[start:end+1]:
 print('Poemas del índice:',len(entries))
 if len(entries)<75:raise RuntimeError('No se hallaron al menos 75 entradas; no se publica')
 if len(entries)>100:raise RuntimeError('Índice sospechoso: demasiadas entradas')
+# La edición impresa conserva títulos repetidos, por lo que no se deduplican.
+# La web original debe proporcionar enlaces distintos a cada entrada.
+bad=[(name,url) for name,url in entries if not url.startswith(BASE+'/wiki/')]
+if bad: raise RuntimeError('Enlaces de poemas no válidos: '+repr(bad[:4]))
+for name,url in entries[:3]: print('Muestra del índice:',name,url,flush=True)
 book=epub.EpubBook()
 book.set_identifier('lorca-canciones-1927-indice-wikisource')
 book.set_title('Canciones (1921-1924), edición de 1927')
