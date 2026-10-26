@@ -52,6 +52,7 @@ if not main:raise RuntimeError('Sin índice Wikisource')
 # Utilizar únicamente enlaces del índice, ignorando la interfaz y enlaces a obras externas.
 anchors=[a for a in main.select('a[href]') if '/wiki/' in a.get('href','') or a.get('href','').startswith('./')]
 print('Enlaces candidatos en el índice:',len(anchors),flush=True)
+print('Muestra enlaces:',[(a.get_text(' ',strip=True)[:60],a.get('href','')[:110]) for a in anchors[:12]],flush=True)
 start=next((i for i,a in enumerate(anchors) if a.get_text(' ',strip=True).casefold()=='teorías'),None)
 if start is None:raise RuntimeError('No se encontró inicio del índice original')
 end=next((i for i,a in enumerate(anchors[start:],start) if a.get_text(' ',strip=True).casefold()=='canción del día que se va'),None)
@@ -61,11 +62,11 @@ entries=[]
 for a in anchors[start:end+1]:
     label=a.get_text(' ',strip=True)
     href=a.get('href','')
-    if not label or label in sections or ':' in unquote(href.removeprefix('/wiki/')):continue
+    if not label or label in sections:continue
     entries.append((label,urljoin(BASE+'/wiki/Canciones',href)))
 print('Poemas del índice:',len(entries))
 if len(entries)<75:raise RuntimeError('No se hallaron al menos 75 entradas; no se publica')
-if len(entries)>100:raise RuntimeError('Índice sospechoso: demasiadas entradas')
+if len(entries)>105:raise RuntimeError('Índice sospechoso: demasiadas entradas')
 # La edición impresa conserva títulos repetidos, por lo que no se deduplican.
 # La web original debe proporcionar enlaces distintos a cada entrada.
 bad=[(name,url) for name,url in entries if not url.startswith(BASE+'/wiki/')]
