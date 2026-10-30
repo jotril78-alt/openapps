@@ -1,0 +1,30 @@
+name: MandoWindows - validar y compilar
+on:
+  push:
+    branches: ['review/mandowindows-0.7']
+    paths: ['apps/mandowindows/**', '.github/workflows/mandowindows-check.yml']
+  pull_request:
+    paths: ['apps/mandowindows/**', '.github/workflows/mandowindows-check.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Comprobar sintaxis y compilar clases y lanzador
+        shell: powershell
+        run: ./apps/mandowindows/build/Build.ps1
+      - name: Pruebas de seguridad de entrada
+        shell: powershell
+        run: ./apps/mandowindows/tests/Safety.Tests.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MandoWindows-0.8-test-windows
+          path: apps/mandowindows/dist/*/MandoWindows-0.8-test-windows.zip
+          if-no-files-found: error
+          retention-days: 14
