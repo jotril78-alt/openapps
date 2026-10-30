@@ -34,3 +34,23 @@ Check ([TestNative]::LeftUp -eq 4) 'Repeated cancellation does not release unown
 [TestNative]::Heartbeat();[TestNative]::BeginClick(0,1,$false);Start-Sleep -Milliseconds 2200
 Check ([TestNative]::LeftUp -eq 5) 'Stalled UI watchdog releases owned click'
 Write-Host 'Hardware acceptance tests remain manual.'
+
+Check ([TestNative]::Axis(65535,32896) -gt 0.99) 'Raw right joystick reaches full right regardless of activation position'
+Check ([TestNative]::Axis(0,32896) -lt -0.99) 'Raw left extent remains symmetric'
+Check ([TestNative]::Axis(32896,32896) -eq 0) 'Raw midpoint does not drift'
+$m=[TestNative]::Motion(4,0,-90,20)
+Check ($m[0] -eq 4 -and $m[1] -eq 0) 'Stick movement suppresses conflicting touch displacement'
+$m=[TestNative]::Motion(0,0,5,-2)
+Check ($m[0] -eq 5 -and $m[1] -eq -2) 'Touch movement applies when sticks are centered'
+$j=New-Object TestNative+Joy;$j.size=52;$j.x=111
+[TestNative]::SetRaw($j,1);$j.x=222;[TestNative]::SetRaw($j,2)
+[TestNative]::TransportPreference=1
+Check ([TestNative]::ReadRaw().x -eq 111) 'Bluetooth report cannot overwrite USB selection'
+[TestNative]::TransportPreference=2
+Check ([TestNative]::ReadRaw().x -eq 222) 'USB report cannot overwrite Bluetooth selection'
+[TestNative]::TransportPreference=0
+Check ([TestNative]::ReadRaw().x -eq 111) 'Automatic mode prioritizes live USB reports'
+Start-Sleep -Milliseconds 550
+Check ([TestNative]::ReadRaw().size -eq 0) 'Stale reports are disconnected'
+$j.x=333;[TestNative]::SetRaw($j,2)
+Check ([TestNative]::ReadRaw().x -eq 333) 'Fresh Bluetooth is recovered after USB stops reporting'

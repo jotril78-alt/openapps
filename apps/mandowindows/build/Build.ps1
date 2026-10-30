@@ -26,7 +26,7 @@ Copy-Item (Join-Path $root 'README.md') $out
 Copy-Item (Join-Path $root 'LICENSE') $out
 $hashes=Get-ChildItem $out -File|Sort-Object Name|ForEach-Object { (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()+'  '+$_.Name }
 $hashes|Set-Content (Join-Path $out 'SHA256SUMS.txt') -Encoding ASCII
-$zip=Join-Path $out 'MandoWindows-0.7-beta-windows.zip'
+$zip=Join-Path $out 'MandoWindows-0.8-test-windows.zip'
 Compress-Archive -LiteralPath @(Get-ChildItem $out -File|ForEach-Object {$_.FullName}) -DestinationPath $zip
 Write-Host ('Paquete compilado, no firmado: '+$zip)
 Write-Host ('SHA256 ZIP: '+(Get-FileHash $zip -Algorithm SHA256).Hash)

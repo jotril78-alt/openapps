@@ -24,7 +24,7 @@ jobs:
         run: ./apps/mandowindows/tests/Safety.Tests.ps1
       - uses: actions/upload-artifact@v4
         with:
-          name: MandoWindows-0.7-beta-windows
-          path: apps/mandowindows/dist/*/MandoWindows-0.7-beta-windows.zip
+          name: MandoWindows-0.8-test-windows
+          path: apps/mandowindows/dist/*/MandoWindows-0.8-test-windows.zip
           if-no-files-found: error
           retention-days: 14

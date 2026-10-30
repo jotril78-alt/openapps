@@ -47,3 +47,15 @@ El lector admite informes USB 01 y Bluetooth extendidos 11-19 hex. Algunos mando
 Wi-Fi no es un transporte directo del DualShock 4. Un modo remoto necesitaría un puente autenticado, emparejamiento y cifrado; no hay servidor ni puertos de red abiertos en esta versión.
 
 Referencia del formato HID: implementación SDL (https://github.com/libsdl-org/SDL/blob/main/src/joystick/hidapi/SDL_hidapi_ps4.c). Esta implementación interpreta el formato; no incorpora una dependencia SDL.
+
+## Regresión 0.7 y candidata 0.8-test
+
+La prueba física del usuario RECHAZA 0.7: joystick derecho defectuoso y pérdida de conexión al retirar USB. No publicar 0.7 como estable. 0.6 sigue siendo la última versión aceptada.
+
+Causas de código identificadas: se priorizaba Raw HID frente al lector WinMM de la versión aceptada, pero se reutilizaban ejes del perfil anterior; se calibraba el centro con la posición de las palancas al activar; USB y Bluetooth compartían un único estado; panel y joysticks generaban movimientos desde dos lugares distintos.
+
+0.8-test conserva WinMM como primera opción Automática, separa los estados USB/Bluetooth y fija el centro y los ejes iniciales del lector PS4 HID. Un único punto aplica movimiento: joystick tiene prioridad sobre el panel mientras se mueve. Se descarta movimiento táctil acumulado al pausar. No se restaura el selector Bluetooth guardado por la candidata anterior.
+
+Al perder conexión, suelta clics, busca de nuevo y deja el control pausado; hay que activar otra vez. El cambio físico de USB a Bluetooth depende de que Windows reciba datos reales. Seleccionar Bluetooth no empareja el mando ni garantiza transición sin corte. Emparejar sin cable con SHARE+PS; solo después seleccionar Bluetooth en la app. La reconexión automática NO implica reactivación automática.
+
+Prueba requerida antes de publicar: joystick derecho en cuatro direcciones y diagonales, panel y joysticks simultáneos (prioridad del joystick), USB estable y Bluetooth sin cable desde el inicio, retirada/reinserción del cable y reactivación. No está aceptada aún por el usuario.
