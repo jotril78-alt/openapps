@@ -1,8 +1,107 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Aplicaciones libres, privadas y sin publicidad"><title>OpenApps — Aplicaciones libres</title><link rel="stylesheet" href="style.css"></head>
-<body><header><a class="logo" href="./">◈ OpenApps</a><nav><a href="#apps">Aplicaciones</a><a href="#principios">Principios</a><a href="#colaborar">Colaborar</a></nav></header>
-<main><section class="hero"><span class="eyebrow">LIBRE · LOCAL · SIN RASTREO</span><h1>Aplicaciones que trabajan para ti.<br><em>No para tus datos.</em></h1><p>Software Android abierto, gratuito y sin publicidad. Descarga, revisa el código y comparte.</p><a class="button" href="#apps">Explorar aplicaciones ↓</a></section>
-<section id="apps"><h2>Biblioteca de aplicaciones</h2><p class="muted">El catálogo crecerá con cada versión publicada y verificada.</p><div id="catalog" class="cards" aria-live="polite"></div></section>
-<section id="principios"><h2>Nuestro compromiso</h2><div class="cards"><article><h3>🔓 Código abierto</h3><p>Fuentes públicas y licencias libres por aplicación.</p></article><article><h3>🛡️ Privacidad</h3><p>Sin analíticas, anuncios ni rastreadores propios.</p></article><article><h3>📴 Primero local</h3><p>Sin conexión cuando la función lo permita.</p></article></div></section>
-<section id="colaborar"><h2>Colabora, si te apetece</h2><p>Todo será gratuito. Las donaciones serán opcionales y nunca desbloquearán funciones.</p><p class="muted">Próximamente: métodos de colaboración con información clara sobre privacidad y comisiones.</p></section></main>
-<footer>OpenApps · Proyecto abierto en preparación · Sin cookies ni analíticas propias</footer><script src="app.js" defer></script></body></html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Aplicaciones y herramientas libres, independientes, sin publicidad, rastreadores ni costes ocultos.">
+  <title>OpenApps — Software Libre, Privado y Soberano</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <a class="logo" href="./">◈ OpenApps</a>
+    <nav>
+      <a href="#apps">Catálogo</a>
+      <a href="#auditoria">Garantía de Seguridad</a>
+      <a href="#proponer">Sugerir App</a>
+      <a href="#colaborar">Colaborar ☕</a>
+      <a href="https://github.com/jotril78-alt/openapps" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <span class="eyebrow">LIBRE · SOBERANO · AUDITABLE · CERO RASTREO</span>
+      <h1>Tecnología accesible para todos.<br><em>Sin peajes, sin anuncios, sin trampas.</em></h1>
+      <p>Desarrollamos y recopilamos herramientas útiles en formato web PWA, Android APK y multiplataforma. Sin costes ocultos, sin recopilación de datos y con código 100% auditable.</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="#apps">Explorar Catálogo ↓</a>
+        <a class="button button-outline" href="#proponer">Proponer una herramienta +</a>
+        <a class="button button-coffee" href="#colaborar">Invítanos a un café ☕</a>
+      </div>
+    </section>
+
+    <!-- Pilares de Confianza / Seguridad -->
+    <section id="auditoria">
+      <h2>Nuestra Garantía de Soberanía</h2>
+      <p class="muted">Democratizar la tecnología significa dar certeza e independencia total a quien la usa.</p>
+      <div class="cards trust-grid">
+        <article>
+          <div class="badge-icon">🛡️</div>
+          <h3>0 Rastreadores</h3>
+          <p>Sin Google Analytics, sin Meta Pixel ni SDKs espía. Tu actividad y tus dispositivos no generan telemetría.</p>
+        </article>
+        <article>
+          <div class="badge-icon">📴</div>
+          <h3>Primero Local & Offline</h3>
+          <p>Herramientas que funcionan en tu navegador o dispositivo sin necesidad de conexión constante ni servidores intermedios.</p>
+        </article>
+        <article>
+          <div class="badge-icon">🔓</div>
+          <h3>Auditoría e Integridad</h3>
+          <p>Fuentes públicas en GitHub, licencias libres y verificación de integridad criptográfica (SHA-256) en cada descarga.</p>
+        </article>
+        <article>
+          <div class="badge-icon">🌐</div>
+          <h3>Multiformato Universal</h3>
+          <p>Usa la versión web directa en cualquier pantalla o descarga el binario nativo optimizado.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Catálogo de Aplicaciones -->
+    <section id="apps">
+      <div class="section-header">
+        <div>
+          <h2>Catálogo de Aplicaciones</h2>
+          <p class="muted">Herramientas verificadas y libres listas para usar o descargar.</p>
+        </div>
+      </div>
+      <div id="catalog" class="cards" aria-live="polite"></div>
+    </section>
+
+    <!-- Buzón Comunitario / Sugerencias -->
+    <section id="proponer" class="community-box">
+      <h2>¿Echas en falta alguna herramienta?</h2>
+      <p>Queremos sustituir el software abusivo por alternativas libres, limpias y accesibles. Si necesitas una app para tu día a día o tienes una idea para democratizar un servicio:</p>
+      <div class="community-actions">
+        <a class="button button-primary" href="https://github.com/jotril78-alt/openapps/issues/new?title=%5BSugerencia%5D+Nueva+aplicaci%C3%B3n&body=Describe+qu%C3%A9+herramienta+necesitas+y+por+qu%C3%A9+ser%C3%ADa+%C3%BAtil+para+la+comunidad." target="_blank" rel="noopener noreferrer">Proponer en GitHub Issues ↗</a>
+        <span class="muted">O si prefieres, colabora revisando código y proponiendo mejoras.</span>
+      </div>
+    </section>
+
+    <!-- Colaboración Ética / Café -->
+    <section id="colaborar" class="support-box">
+      <div class="support-content">
+        <span class="support-badge">☕ Apoyo Comunitario</span>
+        <h2>Todo es y seguirá siendo gratuito</h2>
+        <p>OpenApps no tiene modelo freemium, ni muros de pago, ni vende información. El desarrollo, las auditorías y el alojamiento se mantienen de forma voluntaria.</p>
+        <p class="muted">Si alguna de estas herramientas te resulta útil o te ahorra dinero, puedes apoyar la continuidad invitándonos a un café.</p>
+        <div class="support-buttons">
+          <a class="button button-coffee" href="https://ko-fi.com" target="_blank" rel="noopener noreferrer">☕ Invítanos a un café en Ko-fi</a>
+          <a class="button button-subtle" href="https://github.com/sponsors/jotril78-alt" target="_blank" rel="noopener noreferrer">Patrocinar en GitHub Sponsors ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <p>◈ <strong>OpenApps</strong> · Software Libre, Privado y Seguro para todos.</p>
+      <p class="muted">Sin publicidad, sin cookies ni analíticas. Código abierto bajo licencias libres.</p>
+    </div>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
