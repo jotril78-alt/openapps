@@ -18,20 +18,17 @@
   {
     "id": "navaliche-test",
     "name": "Navaliche Assistant",
-    "description": "Asistente local para Meta Quest 3 y 3S. Zoom computacional, escáner de estancia y órdenes de voz procesadas 100% en el dispositivo sin enviar audio a servidores.",
+    "description": "Asistente de realidad mixta local para Meta Quest 3 y 3S. Zoom computacional, escáner espacial y reconocimiento de voz 100% on-device.",
     "status": "test",
     "icon": "🕶️",
-    "version": "0.4.1 · Meta Quest 3/3S",
-    "category": "Realidad Mixta",
-    "apk": "https://drive.google.com/file/d/116nRH1UE6wOCMgkyLY-QLunjsQkwu0wK/view?usp=drive_web",
-    "downloadLabel": "Descargar APK (103,9 MB) ↗",
-    "source": "https://github.com/jotril78-alt/navaliche-nexus-control",
+    "version": "0.4.1 (En pruebas) · Meta Quest",
+    "category": "Realidad Mixta / Visión",
+    "note": "Módulo en fase de pruebas activas. El paquete APK se distribuirá públicamente en GitHub Releases tras validar la firma en dispositivo.",
     "sha256": "d2473c6eb5bb9606ce06ce7b72ed066ee168202fdb3859cd361b5c850630c287",
-    "note": "Versión en fase de pruebas para Quest 3/3S. Requiere activar modo desarrollador en el visor.",
     "audit": {
       "trackers": 0,
-      "permissions": "Micrófono (solo análisis de voz local), Almacenamiento local",
-      "license": "Código abierto"
+      "permissions": "Micrófono (análisis de voz local), Almacenamiento local",
+      "license": "Código Abierto"
     }
   }
 ]
